@@ -1,9 +1,14 @@
 import models.TestCase;
+import plagiarism.PlagiarismService;
 import models.EvaluationResult;
+import models.LeaderboardEntry;
+import models.Student;
 import services.EvaluationService;
 import java.util.ArrayList;
 // import student.ContestService;
 // import student.StudentService;
+
+import leaderboard.LeaderboardService;
 
 public class Main {
     
@@ -31,6 +36,33 @@ public class Main {
         System.out.println("Score: " + result.getScore());
         System.out.println("Status: " + result.getStatus());
         System.out.println("Evaluation Time: " + result.getEvaluationTime() + " ns");
+
+
+
+
+
+
+
+        //Harsimran checks
+        
+        // LeaderboardService board = new LeaderboardService();
+        // board.addEntry(new LeaderboardEntry(new Student(1, "Asha", "a@demo.com"), 20));
+        // board.addEntry(new LeaderboardEntry(new Student(2, "Ravi", "r@demo.com"), 30));
+
+        // for (LeaderboardEntry entry : board.generateLeaderboard()) {
+        //     System.out.println(entry);
+        // }
+
+        // PlagiarismService check = new PlagiarismService();
+        // double score = check.computeSimilarity(
+        //     check.tokenizeCode(code1), check.tokenizeCode(code2));
+
+        // System.out.println("Similarity: " + score + "%");
+        // System.out.println("Review: " + check.isReviewRecommended(score, 80));
+
+
+
+
 
 
 

@@ -1,8 +1,8 @@
 package plagiarism.tokenizers;
 
-import models.tokensequence;
+import models.TokenSequence;
 
 public interface CodeTokenizer {
-    tokensequence tokenizeCode(String cleanSourceCode);
+    TokenSequence tokenizeCode(String cleanSourceCode);
     String getSupportedLanguage();
 }

@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class tokensequence {
-    private final List<token> tokens;
+public class TokenSequence {
 
-    public tokensequence(List<token> tokens) {
+    private final List<Token> tokens;
+
+    public TokenSequence(List<Token> tokens) {
         this.tokens = new ArrayList<>(tokens);
     }
 
-    public List<token> getTokens() {
+    public List<Token> getTokens() {
         return Collections.unmodifiableList(tokens);
     }
 
