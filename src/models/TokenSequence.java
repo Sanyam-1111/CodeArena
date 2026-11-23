@@ -9,6 +9,13 @@ public class TokenSequence {
     private final List<Token> tokens;
 
     public TokenSequence(List<Token> tokens) {
+
+        if (tokens == null) {
+            throw new IllegalArgumentException(
+                    "Token list cannot be null."
+            );
+        }
+
         this.tokens = new ArrayList<>(tokens);
     }
 
@@ -22,5 +29,10 @@ public class TokenSequence {
 
     public boolean isEmpty() {
         return tokens.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return tokens.toString();
     }
 }

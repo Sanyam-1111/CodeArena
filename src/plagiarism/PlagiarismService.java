@@ -2,91 +2,160 @@ package plagiarism;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import models.Token;
+
 import models.TokenSequence;
+import models.SimilarityMatch;
+import models.PlagiarismReport;
+
 import plagiarism.algorithms.SimilarityAlgorithm;
+import plagiarism.algorithms.LCSSimilarityAlgorithm;
+
 import plagiarism.tokenizers.CodeTokenizer;
+import plagiarism.tokenizers.JavaCodeTokenizer;
 
 public class PlagiarismService implements CodeTokenizer, SimilarityAlgorithm {
-    private static final Pattern TOKEN_PATTERN =
-            Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*|\\d+(?:\\.\\d+)?|\\S");
 
+    private final CodeTokenizer tokenizer;
+    private final SimilarityAlgorithm algorithm;
+    private final PlagiarismAnalyzer analyzer;
+
+    public PlagiarismService() {
+
+        this.tokenizer = new JavaCodeTokenizer();
+        this.algorithm = new LCSSimilarityAlgorithm();
+
+        this.analyzer = new PlagiarismAnalyzer(
+                tokenizer,
+                algorithm
+        );
+    }
+
+    public PlagiarismService(
+            CodeTokenizer tokenizer,
+            SimilarityAlgorithm algorithm) {
+
+        if (tokenizer == null || algorithm == null) {
+            throw new IllegalArgumentException(
+                    "Tokenizer and algorithm cannot be null."
+            );
+        }
+
+        this.tokenizer = tokenizer;
+        this.algorithm = algorithm;
+
+        this.analyzer = new PlagiarismAnalyzer(
+                tokenizer,
+                algorithm
+        );
+    }
+
+    // Convert source code into tokens
     @Override
     public TokenSequence tokenizeCode(String sourceCode) {
-        if (sourceCode == null) {
-            throw new IllegalArgumentException("Source code cannot be null");
-        }
-
-        List<Token> tokens = new ArrayList<>();
-        String[] lines = sourceCode.split("\\R", -1);
-
-        for (int i = 0; i < lines.length; i++) {
-            Matcher matcher = TOKEN_PATTERN.matcher(lines[i]);
-            while (matcher.find()) {
-                String value = matcher.group();
-                char firstCharacter = value.charAt(0);
-                String type = Character.isLetter(firstCharacter) || firstCharacter == '_' || firstCharacter == '$'
-                        ? "WORD"
-                        : Character.isDigit(firstCharacter) ? "NUMBER" : "SYMBOL";
-                tokens.add(new Token(type, value, i + 1));
-            }
-        }
-
-        return new TokenSequence(tokens);
+        return tokenizer.tokenizeCode(sourceCode);
     }
 
+    // Calculate similarity between two token sequences
     @Override
-    public double computeSimilarity(TokenSequence seqA, TokenSequence seqB) {
-        if (seqA == null || seqB == null) {
-            throw new IllegalArgumentException("Token sequences cannot be null");
+    public double computeSimilarity(
+            TokenSequence seqA,
+            TokenSequence seqB) {
+
+        return algorithm.computeSimilarity(seqA, seqB);
+    }
+
+    // Check whether manual review is recommended
+    public boolean isReviewRecommended(
+            double similarityPercent,
+            double thresholdPercent) {
+
+        if (similarityPercent < 0 || similarityPercent > 100
+                || thresholdPercent < 0 || thresholdPercent > 100) {
+
+            throw new IllegalArgumentException(
+                    "Similarity and threshold must be between 0 and 100."
+            );
         }
 
-        List<String> tokensA = getTokenValues(seqA);
-        List<String> tokensB = getTokenValues(seqB);
-        int totalTokens = tokensA.size() + tokensB.size();
-        if (totalTokens == 0) {
-            return 0.0;
+        return similarityPercent >= thresholdPercent;
+    }
+
+    // Compare two submissions
+    public SimilarityMatch compareSubmissions(
+            int submissionIdA,
+            String codeA,
+            int submissionIdB,
+            String codeB,
+            double threshold) {
+
+        return analyzer.compareSubmissions(
+                submissionIdA,
+                codeA,
+                submissionIdB,
+                codeB,
+                threshold
+        );
+    }
+
+    // Generate plagiarism report
+    public PlagiarismReport generateReport(
+            List<SimilarityMatch> matches) {
+
+        if (matches == null) {
+            throw new IllegalArgumentException(
+                    "Matches cannot be null."
+            );
         }
 
-        int[][] commonTokens = new int[tokensA.size() + 1][tokensB.size() + 1];
-        for (int i = 1; i <= tokensA.size(); i++) {
-            for (int j = 1; j <= tokensB.size(); j++) {
-                if (tokensA.get(i - 1).equals(tokensB.get(j - 1))) {
-                    commonTokens[i][j] = commonTokens[i - 1][j - 1] + 1;
-                } else {
-                    commonTokens[i][j] = Math.max(commonTokens[i - 1][j], commonTokens[i][j - 1]);
-                }
+        return new PlagiarismReport(matches);
+    }
+
+    // Compare multiple pairs of submissions
+    public List<SimilarityMatch> compareMultipleSubmissions(
+            List<String> sourceCodes,
+            List<Integer> submissionIds,
+            double threshold) {
+
+        if (sourceCodes == null || submissionIds == null) {
+            throw new IllegalArgumentException(
+                    "Submission lists cannot be null."
+            );
+        }
+
+        if (sourceCodes.size() != submissionIds.size()) {
+            throw new IllegalArgumentException(
+                    "Submission IDs and source codes must have equal sizes."
+            );
+        }
+
+        List<SimilarityMatch> matches = new ArrayList<>();
+
+        for (int i = 0; i < sourceCodes.size(); i++) {
+
+            for (int j = i + 1; j < sourceCodes.size(); j++) {
+
+                SimilarityMatch match = compareSubmissions(
+                        submissionIds.get(i),
+                        sourceCodes.get(i),
+                        submissionIds.get(j),
+                        sourceCodes.get(j),
+                        threshold
+                );
+
+                matches.add(match);
             }
         }
 
-        return commonTokens[tokensA.size()][tokensB.size()] * 200.0 / totalTokens;
-    }
-
-    public boolean isReviewRecommended(double similarityPercent, double thresholdPercent) {
-        if (similarityPercent < 0.0 || similarityPercent > 100.0
-                || thresholdPercent < 0.0 || thresholdPercent > 100.0) {
-            throw new IllegalArgumentException("Similarity and threshold must be between 0 and 100");
-        }
-        return similarityPercent >= thresholdPercent;
+        return matches;
     }
 
     @Override
     public String getSupportedLanguage() {
-        return "Java";
+        return tokenizer.getSupportedLanguage();
     }
 
     @Override
     public String getAlgorithmName() {
-        return "Jaccard token similarity";
-    }
-
-    private List<String> getTokenValues(TokenSequence sequence) {
-        List<String> values = new ArrayList<>();
-        for (Token currentToken : sequence.getTokens()) {
-            values.add(currentToken.getValue());
-        }
-        return values;
+        return algorithm.getAlgorithmName();
     }
 }
