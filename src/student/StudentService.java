@@ -24,6 +24,10 @@ public class StudentService {
             System.out.println("Student ID " + studentId + " is already registered.");
             return false;
         }
+        if (findStudentByEmail(email.trim()) != null) {
+            System.out.println("Email " + email.trim() + " is already registered.");
+            return false;
+        }
 
         students.add(new Student(studentId, name.trim(), email.trim()));
         System.out.println("Registered student: " + name.trim());
@@ -40,9 +44,43 @@ public class StudentService {
         return null;
     }
 
+    // Find a student by email (case-insensitive)
+    public Student findStudentByEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return null;
+        }
+        String target = email.trim().toLowerCase();
+        for (Student s : students) {
+            if (s.getEmail().toLowerCase().equals(target)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    // Search students by name keyword (case-insensitive)
+    public ArrayList<Student> searchStudentsByName(String keyword) {
+        ArrayList<Student> matches = new ArrayList<>();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return matches;
+        }
+        String query = keyword.trim().toLowerCase();
+        for (Student s : students) {
+            if (s.getName().toLowerCase().contains(query)) {
+                matches.add(s);
+            }
+        }
+        return matches;
+    }
+
     // Get all registered students
     public ArrayList<Student> getAllStudents() {
         return new ArrayList<>(students);
+    }
+
+    // Get total count of registered students
+    public int getTotalStudents() {
+        return students.size();
     }
 
     // Update student details
@@ -58,6 +96,11 @@ public class StudentService {
         }
         if (newEmail == null || newEmail.trim().isEmpty() || !newEmail.contains("@")) {
             System.out.println("Invalid email address.");
+            return false;
+        }
+        Student existingEmailOwner = findStudentByEmail(newEmail.trim());
+        if (existingEmailOwner != null && existingEmailOwner.getStudentId() != studentId) {
+            System.out.println("Email " + newEmail.trim() + " is already used by another student.");
             return false;
         }
 

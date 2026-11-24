@@ -45,6 +45,26 @@ public class ContestService {
         return null;
     }
 
+    // Search contests by name keyword (case-insensitive)
+    public ArrayList<Contest> searchContestsByName(String keyword) {
+        ArrayList<Contest> matches = new ArrayList<>();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return matches;
+        }
+        String query = keyword.trim().toLowerCase();
+        for (Contest c : contests) {
+            if (c.getContestName().toLowerCase().contains(query)) {
+                matches.add(c);
+            }
+        }
+        return matches;
+    }
+
+    // Get total count of contests
+    public int getTotalContests() {
+        return contests.size();
+    }
+
     // Update contest details
     public boolean updateContest(int contestId, String newName, String newStart, String newEnd) {
         Contest c = getContestDetails(contestId);
