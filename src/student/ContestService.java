@@ -1,7 +1,7 @@
 package student;
 
-import models.Contest;
 import java.util.ArrayList;
+import models.Contest;
 
 public class ContestService {
     private final ArrayList<Contest> contests = new ArrayList<>();
