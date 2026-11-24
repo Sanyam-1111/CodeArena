@@ -1,5 +1,7 @@
 package contest;
 
+import models.TestCase;
+
 import java.util.ArrayList;
 
 public class ProblemManager {
@@ -9,11 +11,15 @@ public class ProblemManager {
 
     // Automatically generate unique problem IDs
     private int nextProblemId;
+    private int nextTestCaseId;
+    private ContestManager contestManager;
 
     // Constructor
-    public ProblemManager() {
+    public ProblemManager(ContestManager contestManager) {
         problems = new ArrayList<>();
         nextProblemId = 1;
+        nextTestCaseId = 1;
+        this.contestManager = contestManager;
     }
 
     // 1. Add a new problem
@@ -22,10 +28,8 @@ public class ProblemManager {
                               int maxScore, String sampleInput,
                               String sampleOutput) {
 
-        if (contestId <= 0) {
-            throw new IllegalArgumentException(
-                "Contest ID must be greater than zero."
-            );
+        if (contestManager.getContestById(contestId) == null) {
+            throw new IllegalArgumentException("Contest not found.");
         }
 
         Problem problem = new Problem(
@@ -47,6 +51,27 @@ public class ProblemManager {
                            + problem.getProblemId());
 
         return problem;
+    }
+
+    public TestCase addTestCase(int problemId, String input,
+                                String expectedOutput, double marks) {
+        Problem problem = getProblemById(problemId);
+        if (problem == null) {
+            throw new IllegalArgumentException("Problem not found.");
+        }
+        if (input == null || expectedOutput == null || marks <= 0) {
+            throw new IllegalArgumentException("Test case input, expected output, and positive marks are required.");
+        }
+
+        TestCase testCase = new TestCase(nextTestCaseId, input, expectedOutput, marks);
+        problem.addTestCase(testCase);
+        nextTestCaseId++;
+        return testCase;
+    }
+
+    public ArrayList<TestCase> getTestCasesForProblem(int problemId) {
+        Problem problem = getProblemById(problemId);
+        return problem == null ? new ArrayList<>() : problem.getTestCases();
     }
 
     // 2. View all problems

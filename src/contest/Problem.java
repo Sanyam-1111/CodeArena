@@ -1,5 +1,8 @@
 package contest;
 
+import models.TestCase;
+
+import java.util.ArrayList;
 public class Problem {
 
     // Private data members
@@ -11,6 +14,7 @@ public class Problem {
     private int maxScore;
     private String sampleInput;
     private String sampleOutput;
+    private ArrayList<TestCase> testCases;
 
     // Parameterized Constructor
     public Problem(int problemId, int contestId,
@@ -26,6 +30,7 @@ public class Problem {
         setMaxScore(maxScore);
         this.sampleInput = sampleInput;
         this.sampleOutput = sampleOutput;
+        this.testCases = new ArrayList<>();
     }
 
     // Getters
@@ -59,6 +64,17 @@ public class Problem {
 
     public String getSampleOutput() {
         return sampleOutput;
+    }
+
+    public ArrayList<TestCase> getTestCases() {
+        return new ArrayList<>(testCases);
+    }
+
+    public void addTestCase(TestCase testCase) {
+        if (testCase == null) {
+            throw new IllegalArgumentException("Test case cannot be null.");
+        }
+        testCases.add(testCase);
     }
 
     // Setters

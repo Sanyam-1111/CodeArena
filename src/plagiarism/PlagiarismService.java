@@ -6,6 +6,7 @@ import java.util.List;
 import models.TokenSequence;
 import models.SimilarityMatch;
 import models.PlagiarismReport;
+import models.Submission;
 
 import plagiarism.algorithms.SimilarityAlgorithm;
 import plagiarism.algorithms.LCSSimilarityAlgorithm;
@@ -108,6 +109,34 @@ public class PlagiarismService implements CodeTokenizer, SimilarityAlgorithm {
         }
 
         return new PlagiarismReport(matches);
+    }
+
+    public PlagiarismReport analyzeProblemSubmissions(
+            List<Submission> submissions,
+            int contestId,
+            int problemId,
+            double threshold) {
+        if (submissions == null || contestId <= 0 || problemId <= 0) {
+            throw new IllegalArgumentException("Submissions and positive contest and problem IDs are required.");
+        }
+        if (threshold < 0 || threshold > 100) {
+            throw new IllegalArgumentException("Threshold must be between 0 and 100.");
+        }
+
+        List<String> sourceCodes = new ArrayList<>();
+        List<Integer> submissionIds = new ArrayList<>();
+        for (Submission submission : submissions) {
+            if (submission == null) {
+                throw new IllegalArgumentException("Submissions cannot contain null entries.");
+            }
+            if (submission.getContestId() == contestId
+                    && submission.getProblemId() == problemId) {
+                sourceCodes.add(submission.getSourceCode());
+                submissionIds.add(submission.getSubmissionId());
+            }
+        }
+
+        return generateReport(compareMultipleSubmissions(sourceCodes, submissionIds, threshold));
     }
 
     // Compare multiple pairs of submissions

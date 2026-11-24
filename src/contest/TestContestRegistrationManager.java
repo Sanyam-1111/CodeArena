@@ -2,6 +2,7 @@
 package contest;
 
 import java.time.LocalDateTime;
+import student.StudentService;
 
 public class TestContestRegistrationManager {
 
@@ -16,13 +17,18 @@ public class TestContestRegistrationManager {
             LocalDateTime.now().plusHours(3)
         );
 
+        StudentService studentService = new StudentService();
+        studentService.registerStudent(101, "Aarav", "aarav@example.edu");
+        studentService.registerStudent(102, "Priya", "priya@example.edu");
+
         ContestRegistrationManager registrationManager =
-            new ContestRegistrationManager(contestManager);
+            new ContestRegistrationManager(contestManager, studentService);
 
         System.out.println("\n--- REGISTER STUDENTS ---");
 
         registrationManager.registerStudent(1, 101);
         registrationManager.registerStudent(1, 102);
+        registrationManager.registerStudent(1, 999);
 
         System.out.println("\n--- TEST DUPLICATE REGISTRATION ---");
 

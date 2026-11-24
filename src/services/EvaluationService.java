@@ -15,7 +15,20 @@ public class EvaluationService {
     }
 
     public EvaluationResult evaluateSubmission(ArrayList<TestCase> testCases, ArrayList<String> actualOutputs, double marksPerTestCase) {
+        return evaluate(testCases, actualOutputs, marksPerTestCase, false);
+    }
 
+    public EvaluationResult evaluateSubmission(ArrayList<TestCase> testCases, ArrayList<String> actualOutputs) {
+        return evaluate(testCases, actualOutputs, 0.0, true);
+    }
+
+    private EvaluationResult evaluate(ArrayList<TestCase> testCases,
+                                      ArrayList<String> actualOutputs,
+                                      double marksPerTestCase,
+                                      boolean usePerCaseMarks) {
+        if (testCases == null || actualOutputs == null) {
+            throw new IllegalArgumentException("Test cases and outputs cannot be null.");
+        }
         if(testCases.size() != actualOutputs.size()){
             throw new IllegalArgumentException("Test cases and outputs must have equal sizes");
         }
@@ -35,13 +48,18 @@ public class EvaluationService {
 
                 if((expected.trim()).equals(actual.trim())) {
                     passed[0]++;
+                    if (usePerCaseMarks) {
+                        score[0] += testCases.get(i).getMarks();
+                    }
                 }
                 else {
                     failed[0]++;
                 }
             }
 
-            score[0] = scoreCalculator.calculateScore(passed[0], marksPerTestCase);
+            if (!usePerCaseMarks) {
+                score[0] = scoreCalculator.calculateScore(passed[0], marksPerTestCase);
+            }
 
             if(totalTestCases==0){
                 status[0] = "Failed";
@@ -59,6 +77,5 @@ public class EvaluationService {
         });
 
         return new EvaluationResult(totalTestCases, passed[0], failed[0], score[0], status[0], evaluationTime);
-
     }
 }

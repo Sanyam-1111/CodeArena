@@ -12,14 +12,6 @@ public class LeaderboardComparator implements Comparator<LeaderboardEntry> {
             return scoreComparison;
         }
 
-        int timeComparison = Double.compare(
-                a.getExecutionTimeMs(),
-                b.getExecutionTimeMs()
-        );
-        if (timeComparison != 0) {
-            return timeComparison;
-        }
-
         return a.getSubmissionTime().compareTo(b.getSubmissionTime());
     }
 }

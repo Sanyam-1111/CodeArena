@@ -18,7 +18,7 @@ public class LeaderboardDisplay {
 
         System.out.printf(
                 "%-8s %-22s %-12s %-18s %-22s%n",
-                "RANK", "STUDENT", "SCORE", "EXECUTION TIME", "SUBMISSION TIME"
+                "RANK", "STUDENT", "SCORE", "EVALUATION TIME", "SUBMISSION TIME"
         );
 
         System.out.println("--------------------------------------------------------------");
@@ -32,7 +32,7 @@ public class LeaderboardDisplay {
                     rank,
                     entry.getStudent().getName(),
                     entry.getScore(),
-                    entry.getExecutionTimeMs(),
+                    entry.getEvaluationTimeMs(),
                     entry.getSubmissionTime()
             );
 

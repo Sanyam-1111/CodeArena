@@ -1,16 +1,20 @@
 package contest;
 
+import student.StudentService;
+
 import java.util.ArrayList;
 
 public class ContestRegistrationManager {
 
     private ArrayList<ContestRegistration> registrations;
     private ContestManager contestManager;
+    private StudentService studentService;
     private int nextRegistrationId;
 
-    public ContestRegistrationManager(ContestManager contestManager) {
+    public ContestRegistrationManager(ContestManager contestManager, StudentService studentService) {
         this.registrations = new ArrayList<>();
         this.contestManager = contestManager;
+        this.studentService = studentService;
         this.nextRegistrationId = 1;
     }
 
@@ -18,6 +22,11 @@ public class ContestRegistrationManager {
 
         if (studentId <= 0) {
             System.out.println("Invalid Student ID.");
+            return;
+        }
+
+        if (studentService.getStudentById(studentId) == null) {
+            System.out.println("Student not found.");
             return;
         }
 
