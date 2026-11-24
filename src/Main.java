@@ -3,8 +3,8 @@ import models.EvaluationResult;
 import services.EvaluationService;
 import java.util.ArrayList;
 
-// import student.ContestService;
-// import student.StudentService;
+import student.ContestService;
+import student.StudentService;
 
 
 public class Main {
@@ -13,9 +13,9 @@ public class Main {
         
         ArrayList<TestCase> testCases = new ArrayList<>();
 
-        testCases.add( new TestCase(1, "5 5", "10", 10));
-        testCases.add( new TestCase(2, "10 10", "20", 10));
-        testCases.add( new TestCase(3, "15 15", "30", 10));
+        testCases.add(new TestCase(1, "5 5", "10", 10));
+        testCases.add(new TestCase(2, "10 10", "20", 10));
+        testCases.add(new TestCase(3, "15 15", "30", 10));
 
         ArrayList<String> actualOutputs = new ArrayList<>();
 
@@ -34,9 +34,29 @@ public class Main {
         System.out.println("Status: " + result.getStatus());
         System.out.println("Evaluation Time: " + result.getEvaluationTime() + " ns");
 
+        // Member 1: Student & Contest Management
+        StudentService studentService = new StudentService();
+        ContestService contestService = new ContestService();
 
+        // Test Student Management
+        studentService.registerStudent(101, "Aarav", "aarav@coderank.edu");
+        studentService.registerStudent(102, "Priya", "priya@coderank.edu");
+        System.out.println("All Students: " + studentService.getAllStudents());
+        System.out.println("Find 101: " + studentService.getStudentById(101));
 
+        studentService.updateStudent(101, "Aarav Sharma", "aarav.s@coderank.edu");
+        studentService.deleteStudent(102);
+        System.out.println("Updated Students: " + studentService.getAllStudents());
 
+        // Test Contest Management
+        contestService.createContest(1, "Weekly Contest", "10:00 AM", "12:00 PM");
+        contestService.createContest(2, "Code Sprint", "2:00 PM", "4:00 PM");
+        System.out.println("All Contests: " + contestService.getAllContests());
+        System.out.println("Find Contest 1: " + contestService.getContestDetails(1));
+
+        contestService.updateContest(1, "Weekly Contest #1", "10:00 AM", "1:00 PM");
+        contestService.deleteContest(2);
+        System.out.println("Updated Contests: " + contestService.getAllContests());
 
 
 

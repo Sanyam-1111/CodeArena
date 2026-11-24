@@ -1,57 +1,82 @@
-// package student;
+package student;
 
-// import models.Contest;
-// import java.util.ArrayList;
+import models.Contest;
+import java.util.ArrayList;
 
-// public class ContestService {
-//     private ArrayList<Contest> contests = new ArrayList<>();
+public class ContestService {
+    private final ArrayList<Contest> contests = new ArrayList<>();
 
-//     // Create a new contest
-//     public void createContest(int contestId, String contestName, String startTime, String endTime) {
-//         if (getContestDetails(contestId) != null) {
-//             System.out.println("Contest ID " + contestId + " already exists.");
-//             return;
-//         }
-//         contests.add(new Contest(contestId, contestName, startTime, endTime));
-//         System.out.println("Created contest: " + contestName);
-//     }
+    // Create a new contest
+    public boolean createContest(int contestId, String contestName, String startTime, String endTime) {
+        if (contestId <= 0) {
+            System.out.println("Invalid contest ID. Must be a positive number.");
+            return false;
+        }
+        if (contestName == null || contestName.trim().isEmpty()) {
+            System.out.println("Contest name cannot be empty.");
+            return false;
+        }
+        if (startTime == null || startTime.trim().isEmpty() || endTime == null || endTime.trim().isEmpty()) {
+            System.out.println("Start time and end time cannot be empty.");
+            return false;
+        }
+        if (getContestDetails(contestId) != null) {
+            System.out.println("Contest ID " + contestId + " already exists.");
+            return false;
+        }
 
-//     // Get all contests
-//     public ArrayList<Contest> getAllContests() {
-//         return contests;
-//     }
+        contests.add(new Contest(contestId, contestName.trim(), startTime.trim(), endTime.trim()));
+        System.out.println("Created contest: " + contestName.trim());
+        return true;
+    }
 
-//     // Find one contest by ID
-//     public Contest getContestDetails(int contestId) {
-//         for (Contest c : contests) {
-//             if (c.getContestId() == contestId) {
-//                 return c;
-//             }
-//         }
-//         return null;
-//     }
+    // Get all contests
+    public ArrayList<Contest> getAllContests() {
+        return new ArrayList<>(contests);
+    }
 
-//     // Update contest details
-//     public boolean updateContest(int contestId, String newName, String newStart, String newEnd) {
-//         Contest c = getContestDetails(contestId);
-//         if (c == null) {
-//             System.out.println("Contest not found.");
-//             return false;
-//         }
-//         c.setContestName(newName);
-//         c.setStartTime(newStart);
-//         c.setEndTime(newEnd);
-//         return true;
-//     }
+    // Find one contest by ID
+    public Contest getContestDetails(int contestId) {
+        for (Contest c : contests) {
+            if (c.getContestId() == contestId) {
+                return c;
+            }
+        }
+        return null;
+    }
 
-//     // Delete contest by ID
-//     public boolean deleteContest(int contestId) {
-//         Contest c = getContestDetails(contestId);
-//         if (c == null) {
-//             System.out.println("Contest not found.");
-//             return false;
-//         }
-//         contests.remove(c);
-//         return true;
-//     }
-// }
+    // Update contest details
+    public boolean updateContest(int contestId, String newName, String newStart, String newEnd) {
+        Contest c = getContestDetails(contestId);
+        if (c == null) {
+            System.out.println("Contest with ID " + contestId + " not found.");
+            return false;
+        }
+        if (newName == null || newName.trim().isEmpty()) {
+            System.out.println("Contest name cannot be empty.");
+            return false;
+        }
+        if (newStart == null || newStart.trim().isEmpty() || newEnd == null || newEnd.trim().isEmpty()) {
+            System.out.println("Start time and end time cannot be empty.");
+            return false;
+        }
+
+        c.setContestName(newName.trim());
+        c.setStartTime(newStart.trim());
+        c.setEndTime(newEnd.trim());
+        System.out.println("Updated contest ID " + contestId);
+        return true;
+    }
+
+    // Delete contest by ID
+    public boolean deleteContest(int contestId) {
+        Contest c = getContestDetails(contestId);
+        if (c == null) {
+            System.out.println("Contest with ID " + contestId + " not found.");
+            return false;
+        }
+        contests.remove(c);
+        System.out.println("Deleted contest ID " + contestId);
+        return true;
+    }
+}
