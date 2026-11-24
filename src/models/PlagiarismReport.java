@@ -10,7 +10,6 @@ public class PlagiarismReport {
     private final int suspiciousMatches;
 
     public PlagiarismReport(List<SimilarityMatch> matches) {
-
         if (matches == null) {
             throw new IllegalArgumentException("Matches cannot be null.");
         }
@@ -19,7 +18,6 @@ public class PlagiarismReport {
         this.totalComparisons = matches.size();
 
         int count = 0;
-
         for (SimilarityMatch match : matches) {
             if (match.isReviewRecommended()) {
                 count++;

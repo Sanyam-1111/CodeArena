@@ -14,15 +14,11 @@ public class SimilarityMatch {
             boolean reviewRecommended) {
 
         if (submissionIdA == submissionIdB) {
-            throw new IllegalArgumentException(
-                    "Cannot compare a submission with itself."
-            );
+                throw new IllegalArgumentException("Cannot compare a submission with itself.");
         }
 
         if (similarityPercentage < 0 || similarityPercentage > 100) {
-            throw new IllegalArgumentException(
-                    "Similarity must be between 0 and 100."
-            );
+                throw new IllegalArgumentException("Similarity must be between 0 and 100.");
         }
 
         this.submissionIdA = submissionIdA;

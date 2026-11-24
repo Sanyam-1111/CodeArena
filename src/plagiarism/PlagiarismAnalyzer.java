@@ -15,9 +15,7 @@ public class PlagiarismAnalyzer {
             SimilarityAlgorithm algorithm) {
 
         if (tokenizer == null || algorithm == null) {
-            throw new IllegalArgumentException(
-                    "Tokenizer and algorithm cannot be null."
-            );
+            throw new IllegalArgumentException("Tokenizer and algorithm cannot be null.");
         }
 
         this.tokenizer = tokenizer;
@@ -52,11 +50,4 @@ public class PlagiarismAnalyzer {
         );
     }
 
-    public String getAlgorithmName() {
-        return algorithm.getAlgorithmName();
-    }
-
-    public String getSupportedLanguage() {
-        return tokenizer.getSupportedLanguage();
-    }
 }
