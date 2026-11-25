@@ -55,12 +55,12 @@ public class CodeArenaWebServer {
 
     public static void main(String[] args) throws Exception {
         CodeArenaWebServer application = new CodeArenaWebServer();
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 8081), 0);
         server.setExecutor(Executors.newSingleThreadExecutor());
         server.createContext("/", application::handleRequest);
         server.start();
 
-        String address = "http://127.0.0.1:8080";
+        String address = "http://127.0.0.1:8081";
         System.out.println("CodeArena is running at " + address);
         System.out.println("Keep this window open while using the application.");
         if (Desktop.isDesktopSupported()) {
@@ -73,6 +73,18 @@ public class CodeArenaWebServer {
     }
 
     private void handleRequest(HttpExchange exchange) throws IOException {
+        String origin = exchange.getRequestHeaders().getFirst("Origin");
+        if (origin != null && (origin.matches("http://(127\\.0\\.0\\.1|localhost):(8080|5500|5501)"))) {
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin", origin);
+            exchange.getResponseHeaders().set("Vary", "Origin");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
+        }
+        if (exchange.getRequestMethod().equals("OPTIONS")) {
+            exchange.sendResponseHeaders(204, -1);
+            exchange.close();
+            return;
+        }
         try {
             String path = exchange.getRequestURI().getPath();
             if (path.startsWith("/api/")) {

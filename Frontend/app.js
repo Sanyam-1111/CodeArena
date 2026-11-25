@@ -1,13 +1,18 @@
 const state={students:[],contests:[],problems:[],registrations:[],submissions:[],testCases:[]};
+const API_BASE=['8080','5500','5501'].includes(window.location.port)?'http://127.0.0.1:8081':'';
 const $=selector=>document.querySelector(selector);
 const $$=selector=>Array.from(document.querySelectorAll(selector));
 let toastTimer;
 
 async function api(path,values){
   const options=values?{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(values)}:{};
-  const response=await fetch(path,options);
+  const response=await fetch(`${API_BASE}${path}`,options);
+  const text=await response.text();
   let payload={};
-  try{payload=await response.json()}catch(e){payload={error:'The server returned an invalid response.'}}
+  try{payload=text?JSON.parse(text):{}}catch(e){
+    const excerpt=text.replace(/\s+/g,' ').slice(0,160);
+    throw new Error(`Server returned non-JSON data (HTTP ${response.status})${excerpt?`: ${excerpt}`:''}`);
+  }
   if(!response.ok)throw new Error(payload.error||'Request failed.');
   return payload;
 }
