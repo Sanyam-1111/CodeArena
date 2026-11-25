@@ -37,6 +37,10 @@ public class CodeArenaApplication {
         new CodeArenaApplication().runMenu();
     }
 
+    public static void main(String[] args) {
+        run();
+    }
+
     private void runMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
