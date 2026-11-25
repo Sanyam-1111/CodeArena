@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CodeArena — Contest workspace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#overview" aria-label="CodeArena home">
+        <span class="brand-mark">C</span>
+        <span><strong>CodeArena</strong><small>CONTEST WORKSPACE</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-page="students"><span>♙</span> Students</button>
+        <button class="nav-item" data-page="contests"><span>◷</span> Contests</button>
+        <button class="nav-item" data-page="problems"><span>⌘</span> Problems & tests</button>
+        <button class="nav-item" data-page="registrations"><span>＋</span> Registrations</button>
+        <button class="nav-item" data-page="submissions"><span>▤</span> Submissions</button>
+        <button class="nav-item" data-page="leaderboard"><span>↗</span> Leaderboard</button>
+        <button class="nav-item" data-page="plagiarism"><span>◎</span> Similarity review</button>
+      </nav>
+      <div class="sidebar-foot"><span class="live-dot"></span><span>Local workspace</span><span class="version">v1</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>CodeArena</span><span class="crumb-slash">/</span><strong id="page-crumb">Overview</strong></div>
+        <div class="top-actions"><span class="connection"><i></i> Connected</span><span class="avatar">CA</span></div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="page active" id="page-overview">
+          <div class="page-heading">
+            <div><p class="eyebrow">YOUR CONTROL ROOM</p><h1>Welcome to CodeArena</h1><p class="subheading">Manage contests, review submissions, and keep your competition moving.</p></div>
+            <button class="button button-dark" data-go="contests"><span>＋</span> Create a contest</button>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon green">♙</span><span class="stat-caption">PEOPLE</span></div><strong id="stat-students">0</strong><span class="stat-label">Registered students</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon violet">◷</span><span class="stat-caption">COMPETITIONS</span></div><strong id="stat-contests">0</strong><span class="stat-label">Contests created</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon orange">⌘</span><span class="stat-caption">CHALLENGES</span></div><strong id="stat-problems">0</strong><span class="stat-label">Problems in your arena</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon blue">▤</span><span class="stat-caption">ACTIVITY</span></div><strong id="stat-submissions">0</strong><span class="stat-label">Code submissions</span></article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel journey-panel">
+              <div class="panel-heading"><div><p class="eyebrow">GET STARTED</p><h2>Build your first contest</h2></div><span class="panel-step">01 — 04</span></div>
+              <p class="muted">Set up a contest, add a challenge, and invite a student to submit a solution.</p>
+              <div class="journey-list">
+                <button data-go="students"><span class="journey-num">01</span><span><b>Add students</b><small>Create accounts for your participants</small></span><span class="arrow">↗</span></button>
+                <button data-go="contests"><span class="journey-num">02</span><span><b>Create a contest</b><small>Set a name, description, and time window</small></span><span class="arrow">↗</span></button>
+                <button data-go="problems"><span class="journey-num">03</span><span><b>Write a problem</b><small>Attach marked test cases to a challenge</small></span><span class="arrow">↗</span></button>
+                <button data-go="submissions"><span class="journey-num">04</span><span><b>Review submissions</b><small>Compare supplied output and view results</small></span><span class="arrow">↗</span></button>
+              </div>
+            </article>
+            <article class="panel note-panel"><div class="note-symbol">i</div><p class="eyebrow">EVALUATION NOTE</p><h2>Output comparison</h2><p class="muted">CodeArena stores source code and compares outputs you provide against each problem’s expected output. It does not execute submitted code.</p><button class="text-button" data-go="submissions">Go to submissions <span>→</span></button></article>
+          </div>
+          <div class="panel recent-panel"><div class="panel-heading"><div><p class="eyebrow">LATEST ACTIVITY</p><h2>Recent submissions</h2></div><button class="text-button" data-go="submissions">View all <span>→</span></button></div><div id="recent-submissions" class="empty-inline">No submissions yet. They’ll show here when students submit.</div></div>
+        </section>
+
+        <section class="page" id="page-students">
+          <div class="page-heading"><div><p class="eyebrow">PEOPLE</p><h1>Students</h1><p class="subheading">Create and manage student accounts.</p></div></div>
+          <div class="content-grid">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">NEW RECORD</p><h2>Add a student</h2></div></div><form id="student-form" class="form-stack"><label>Student ID<input name="studentId" type="number" min="1" required placeholder="e.g. 1042"></label><label>Full name<input name="name" required placeholder="Aarav Sharma"></label><label>Email address<input name="email" type="email" required placeholder="aarav@school.edu"></label><button class="button button-dark" type="submit">Add student <span>→</span></button></form></article>
+            <article class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">DIRECTORY</p><h2>All students</h2></div><span class="count-pill" id="students-count">0</span></div><div class="table-scroll"><table><thead><tr><th>ID</th><th>NAME</th><th>EMAIL</th><th></th></tr></thead><tbody id="students-table"></tbody></table></div><div class="empty-state hidden" id="students-empty">No students yet. Add the first student to get started.</div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-contests">
+          <div class="page-heading"><div><p class="eyebrow">COMPETITIONS</p><h1>Contests</h1><p class="subheading">Create contests and set their schedule.</p></div></div>
+          <div class="content-grid">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">NEW CONTEST</p><h2>Contest details</h2></div></div><form id="contest-form" class="form-stack"><label>Contest name<input name="name" required placeholder="Weekly Challenge"></label><label>Description<textarea name="description" rows="3" required placeholder="What will students be solving?"></textarea></label><div class="two-fields"><label>Starts<input name="startTime" type="datetime-local" required></label><label>Ends<input name="endTime" type="datetime-local" required></label></div><button class="button button-dark" type="submit">Create contest <span>→</span></button></form></article>
+            <article class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">SCHEDULE</p><h2>All contests</h2></div><span class="count-pill" id="contests-count">0</span></div><div id="contest-cards" class="contest-list"></div><div class="empty-state hidden" id="contests-empty">Your contests will appear here.</div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-problems">
+          <div class="page-heading"><div><p class="eyebrow">CHALLENGE LIBRARY</p><h1>Problems & test cases</h1><p class="subheading">Problems belong to a contest. Each can have multiple marked test cases.</p></div></div>
+          <div class="content-grid">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">NEW CHALLENGE</p><h2>Add a problem</h2></div></div><form id="problem-form" class="form-stack"><label>Contest<select name="contestId" id="problem-contest" required></select></label><label>Title<input name="title" required placeholder="Two Sum"></label><label>Description<textarea name="description" rows="3" required placeholder="Describe the task"></textarea></label><div class="two-fields"><label>Difficulty<select name="difficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select></label><label>Maximum score<input name="maxScore" type="number" min="1" required value="100"></label></div><div class="two-fields"><label>Sample input<textarea name="sampleInput" rows="2"></textarea></label><label>Sample output<textarea name="sampleOutput" rows="2"></textarea></label></div><button class="button button-dark" type="submit">Add problem <span>→</span></button></form></article>
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">SCORING DATA</p><h2>Add a test case</h2></div></div><form id="testcase-form" class="form-stack"><label>Problem<select name="problemId" id="testcase-problem" required></select></label><label>Input<textarea name="input" rows="3" required placeholder="Input students should solve"></textarea></label><label>Expected output<textarea name="expectedOutput" rows="3" required placeholder="Expected result"></textarea></label><label>Marks<input name="marks" type="number" min="0.01" step="any" required placeholder="25"></label><button class="button button-dark" type="submit">Add test case <span>→</span></button></form></article>
+          </div>
+          <article class="panel table-panel section-gap"><div class="panel-heading"><div><p class="eyebrow">YOUR CHALLENGES</p><h2>Problem list</h2></div><label class="inline-select">Contest<select id="problem-filter"></select></label></div><div class="problem-grid" id="problem-cards"></div><div class="empty-state hidden" id="problems-empty">Choose a contest with problems or add your first challenge.</div></article>
+          <article class="panel table-panel section-gap"><div class="panel-heading"><div><p class="eyebrow">SELECTED PROBLEM</p><h2>Test cases</h2></div><label class="inline-select">Problem<select id="testcase-filter"></select></label></div><div class="table-scroll"><table><thead><tr><th>ID</th><th>INPUT</th><th>EXPECTED OUTPUT</th><th>MARKS</th></tr></thead><tbody id="testcases-table"></tbody></table></div><div class="empty-state hidden" id="testcases-empty">No test cases are attached to this problem yet.</div></article>
+        </section>
+
+        <section class="page" id="page-registrations">
+          <div class="page-heading"><div><p class="eyebrow">PARTICIPANTS</p><h1>Registrations</h1><p class="subheading">Students must exist before they can join a contest.</p></div></div>
+          <div class="content-grid">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">ENROLLMENT</p><h2>Register a student</h2></div></div><form id="registration-form" class="form-stack"><label>Contest<select name="contestId" id="registration-contest" required></select></label><label>Student<select name="studentId" id="registration-student" required></select></label><button class="button button-dark" type="submit">Register student <span>→</span></button></form></article>
+            <article class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">CONTEST ROSTER</p><h2>Registrations</h2></div><label class="inline-select">Filter<select id="registration-filter"></select></label></div><div class="table-scroll"><table><thead><tr><th>REG. ID</th><th>STUDENT</th><th>CONTEST</th><th>DATE</th><th>STATUS</th><th></th></tr></thead><tbody id="registrations-table"></tbody></table></div><div class="empty-state hidden" id="registrations-empty">No registrations match this filter.</div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-submissions">
+          <div class="page-heading"><div><p class="eyebrow">CODE REVIEW</p><h1>Submissions</h1><p class="subheading">Store source code, then compare outputs supplied by the reviewer.</p></div></div>
+          <div class="content-grid submission-grid">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">NEW SUBMISSION</p><h2>Submit source code</h2></div></div><form id="submission-form" class="form-stack"><label>Student<select name="studentId" id="submission-student" required></select></label><label>Contest<select name="contestId" id="submission-contest" required></select></label><label>Problem<select name="problemId" id="submission-problem" required></select></label><label>Source code<textarea name="sourceCode" class="code-input" rows="10" required spellcheck="false" placeholder="public class Main {&#10;    public static void main(String[] args) {&#10;        // your solution&#10;    }&#10;}"></textarea></label><button class="button button-dark" type="submit">Save submission <span>→</span></button></form></article>
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">REVIEW OUTPUT</p><h2>Evaluate submission</h2></div></div><form id="evaluation-form" class="form-stack"><label>Submission<select name="submissionId" id="evaluation-submission" required></select></label><div id="evaluation-cases" class="case-output-list"><p class="muted">Choose a submission to see its test cases.</p></div><button class="button button-green" type="submit">Compare outputs <span>→</span></button><div id="evaluation-result" class="result-card hidden"></div></form></article>
+          </div>
+          <article class="panel table-panel section-gap"><div class="panel-heading"><div><p class="eyebrow">HISTORY</p><h2>All submissions</h2></div><span class="count-pill" id="submission-count">0</span></div><div class="table-scroll"><table><thead><tr><th>ID</th><th>STUDENT</th><th>CONTEST</th><th>PROBLEM</th><th>SUBMITTED</th><th>RESULT</th><th>SCORE</th></tr></thead><tbody id="submissions-table"></tbody></table></div><div class="empty-state hidden" id="submissions-empty">Submissions will appear here.</div></article>
+        </section>
+
+        <section class="page" id="page-leaderboard">
+          <div class="page-heading"><div><p class="eyebrow">STANDINGS</p><h1>Leaderboard</h1><p class="subheading">Best score per student and problem, summed for this contest.</p></div></div>
+          <article class="panel leaderboard-panel"><div class="leaderboard-toolbar"><div><p class="eyebrow">CONTEST RANKING</p><h2>Current standings</h2></div><div class="toolbar-fields"><label class="inline-select">Contest<select id="leaderboard-contest"></select></label><button class="button button-dark" id="load-leaderboard">Refresh standings <span>↻</span></button></div></div><div class="table-scroll"><table><thead><tr><th>RANK</th><th>STUDENT</th><th>SCORE</th><th>SUBMITTED</th></tr></thead><tbody id="leaderboard-table"></tbody></table></div><div class="empty-state" id="leaderboard-empty">Choose a contest to load standings from evaluated submissions.</div><p class="footnote">Tie-breaks use the time the student reached their selected best scores. Evaluation time measures output comparison work, not submitted program runtime.</p></article>
+        </section>
+
+        <section class="page" id="page-plagiarism">
+          <div class="page-heading"><div><p class="eyebrow">INTEGRITY REVIEW</p><h1>Similarity review</h1><p class="subheading">Compare stored source code from submissions to the same contest problem.</p></div></div>
+          <div class="content-grid plagiarism-layout">
+            <article class="panel form-panel"><div class="panel-heading"><div><p class="eyebrow">ANALYSIS SCOPE</p><h2>Choose a comparison</h2></div></div><form id="plagiarism-form" class="form-stack"><label>Contest<select name="contestId" id="plagiarism-contest" required></select></label><label>Problem<select name="problemId" id="plagiarism-problem" required></select></label><label>Review threshold <span class="label-suffix">percent</span><input name="threshold" type="number" min="0" max="100" step="1" value="80" required></label><button class="button button-dark" type="submit">Analyze submissions <span>→</span></button></form></article>
+            <article class="panel report-panel"><div id="plagiarism-placeholder" class="report-placeholder"><div class="report-icon">◎</div><p class="eyebrow">SIMILARITY REPORT</p><h2>Ready when you are</h2><p class="muted">Select a contest and problem to compare every stored submission in that scope.</p></div><div id="plagiarism-report" class="hidden"></div></article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
