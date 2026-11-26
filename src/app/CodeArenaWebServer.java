@@ -356,8 +356,8 @@ public class CodeArenaWebServer {
         if (path.equals("/") || path.equals("/index.html")) {
             filename = "index.html";
             contentType = "text/html; charset=utf-8";
-        } else if (path.equals("/styles.css")) {
-            filename = "styles.css";
+        } else if (path.equals("/style.css")) {
+            filename = "style.css";
             contentType = "text/css; charset=utf-8";
         } else if (path.equals("/app.js")) {
             filename = "app.js";
@@ -367,7 +367,7 @@ public class CodeArenaWebServer {
             return;
         }
 
-        File file = new File("frontend", filename);
+        File file = new File("Frontend", filename);
         if (!file.isFile()) {
             sendJson(exchange, 500, object("error", "Frontend files were not found. Start the app from the project folder."));
             return;
